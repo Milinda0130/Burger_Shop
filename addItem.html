@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #5c6e84, #1b222e);
+            font-family: 'Arial', sans-serif;
+        }
+        .table-container {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    width: 700px;
+    max-height: 400px; /* Sets a fixed height to enable scrolling */
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Make the table header stick while scrolling */
+.table-container table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #374151; /* This matches the dark header color */
+}
+
+
+.custom-confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        /* Popup container */
+        .custom-confirm-box {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            transform: scale(0.8);
+            transition: transform 0.3s;
+        }
+        
+        /* When active */
+        .custom-confirm-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .custom-confirm-overlay.active .custom-confirm-box {
+            transform: scale(1);
+        }
+        
+        /* Title */
+        .custom-confirm-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #d9534f;
+        }
+        
+        /* Message */
+        .custom-confirm-message {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        /* Icon */
+        .custom-confirm-icon {
+            font-size: 50px;
+            color: #d9534f;
+            margin-bottom: 15px;
+        }
+        
+        /* Buttons */
+        .custom-confirm-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .custom-confirm-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .custom-confirm-btn-cancel {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        
+        .custom-confirm-btn-cancel:hover {
+            background-color: #e2e6ea;
+        }
+        
+        .custom-confirm-btn-delete {
+            background-color: #d9534f;
+            color: white;
+        }
+        
+        .custom-confirm-btn-delete:hover {
+            background-color: #c9302c;
+        }
+
+    </style>
+</head>
+<body>
+    <nav id="sticky-banner" tabindex="-1" class="fixed top-0 start-0 z-40 flex justify-center w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+        <div class="flex justify-between w-full items-center">
+            <!-- Logo on the left -->
+            <div class="text-lg font-bold text-gray-700 dark:text-white flex items-center">
+                <img src="./logo.jpeg" alt="Burger Hub Logo" class="w-6 h-6 mr-2">
+                BURGER HUB
+            </div>
+            
+    
+            <!-- Navigation Items -->
+            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                <li class="inline-flex items-center">
+                    <a href="./index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center dark:text-gray-400">
+                        |
+                    </div>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="./viewOrders.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
+                        </svg>
+                        View Orders
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center dark:text-gray-400">
+                        |
+                    </div>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="./addCustomer.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+                        </svg>
+                        Add Customer
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center dark:text-gray-400">
+                        |
+                    </div>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="./addItem.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9.99999h.01m-5.01 0h.01m-5.01 0h.01m6.99-2h.01m-4.01 0h.01M6.5 13C5.11929 13 4 11.5609 4 9.78571c0-1.51294.45014-3.74021 2.96705-3.45229 0-2.59313 4.39355-3.02689 5.16885-1.10126.5-.64286 1.5465-1.20611 2.5405-1.09637 1.2588.13899 2.0504 1.03413 2.2104 2.19763 1.7674 0 3.3338 1.31661 3.1132 3.45229C20 11.5609 18.8807 13 17.5 13m-8.52339 5.6162V20h6.04679v-1.3838C17.68 17.6825 19.633 15.5551 20 13H4c.36697 2.5551 2.31996 4.6825 4.97661 5.6162Z"/>
+                        </svg>
+                        Add Items
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="rtl:rotate-180 block w-5 h-5 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        </svg>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </nav>
+    <div class="flex items-center min-h-screen pt-20">
+        <form class="bg-dark p-1 rounded-lg shadow-lg w-full max-w-lg text-white mb-4">
+            <h2 class="text-2xl font-semibold text-center mb-6">Item Management</h2>
+            <div class="mb-4">
+                <label for="itemno" class="block text-sm">Item Number:</label>
+                        <input type="text" class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white" id="itemno" name="itemno" required>
+            </div>
+            <div class="mb-4">
+                <label for="itemtype" class="block text-sm">Item Type:</label>
+                <input type="text" class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white" id="itemtype" name="itemtype" required>
+            </div>
+            <div class="mb-4">
+                <label for="name" class="block text-sm">Item Name:</label>
+                <input type="text" class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white" id="name" name="name" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm">Price:</label>
+                <input type="text" id="price" class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white" required>
+            </div>
+            <div class="mb-4">
+                <label for="image" class="block text-sm">Image:</label>
+                <input type="file" class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="w-full py-2 text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Add Item</button>
+        </form>
+    </div>
+    
+    <div class="table-container bg-dark p-4 rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th class="px-2 py-2">Item Number</th>
+                    <th class="px-2 py-2">Item Type</th>
+                    <th class="px-2 py-2">Name</th>
+                    <th class="px-2 py-2">Price(Rs.)</th>
+                    <th class="px-2 py-2">Image</th>
+                    <th class="px-2 py-2">Actions</th>
+                </tr>
+               
+            </thead>
+            <tbody>
+              
+            </tbody>
+        </table>
+    </div>
+   
+    <div class="custom-confirm-overlay" id="customConfirmOverlay">
+        <div class="custom-confirm-box">
+            <div class="custom-confirm-icon">⚠️</div>
+            <div class="custom-confirm-title">Hold up!</div>
+            <div class="custom-confirm-message">Are you sure you want to delete this item? This action cannot be undone.</div>
+            <div class="custom-confirm-buttons">
+                <button class="custom-confirm-btn custom-confirm-btn-cancel" id="customConfirmCancel">Cancel</button>
+                <button class="custom-confirm-btn custom-confirm-btn-delete" id="customConfirmDelete">Yes, Delete It</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="./item.js"></script>
+</body>
+</html>
+
+
+
+    
+    

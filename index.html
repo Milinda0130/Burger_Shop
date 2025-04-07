@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+   <link href="./index.css" rel="stylesheet">
+</head>
+<body>
+   
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <nav id="sticky-banner" tabindex="-1" class="fixed top-0 start-0 z-40 flex justify-center w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+        <div class="flex justify-between w-full items-center">
+            <!-- Logo on the left -->
+            <div class="text-lg font-bold text-amber-600 dark:text-amber-400 flex items-center transition-all duration-300 hover:text-amber-500 dark:hover:text-amber-300">
+                <img src="./logo.jpeg" alt="Burger Hub Logo" class="w-8 h-8 mr-3 rounded-full shadow-sm">
+                <a href="#" class="inline-flex items-center font-extrabold tracking-wide uppercase text-base md:text-lg tex" data-drawer-target="drawer-top-example" data-drawer-show="drawer-top-example" data-drawer-placement="top" aria-controls="drawer-top-example">
+                    BURGER HUB CATEGORIES <span class="ml-1 text-xl">👁️</span>
+                </a>
+            </div>
+            
+          
+            <!-- Navigation Items -->
+            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+               
+                <li class="inline-flex items-center">
+                    <a href="./index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center dark:text-gray-400">
+                        |
+                    </div>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="./viewOrders.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
+                        </svg>
+                        View Orders
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center dark:text-gray-400">
+                        |
+                    </div>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="./addCustomer.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+                        </svg>
+                        Add Customer
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center dark:text-gray-400">
+                        |
+                    </div>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="./addItem.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9.99999h.01m-5.01 0h.01m-5.01 0h.01m6.99-2h.01m-4.01 0h.01M6.5 13C5.11929 13 4 11.5609 4 9.78571c0-1.51294.45014-3.74021 2.96705-3.45229 0-2.59313 4.39355-3.02689 5.16885-1.10126.5-.64286 1.5465-1.20611 2.5405-1.09637 1.2588.13899 2.0504 1.03413 2.2104 2.19763 1.7674 0 3.3338 1.31661 3.1132 3.45229C20 11.5609 18.8807 13 17.5 13m-8.52339 5.6162V20h6.04679v-1.3838C17.68 17.6825 19.633 15.5551 20 13H4c.36697 2.5551 2.31996 4.6825 4.97661 5.6162Z"/>
+                        </svg>
+                        Add Items
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="rtl:rotate-180 block w-5 h-5 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        </svg>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </nav>
+    
+     
+  <aside id="logo-sidebar" class="fixed top-0 right-0 z-0 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        
+                <!-- Sidebar Content -->
+                <h2 class="text-xl font-semibold text-white mb-4">Shopping Cart</h2>
+        
+                <div class="mb-4">
+                <select id="existingCustomer"  class="mt-1 p-2 w-full text-gray-900 rounded-md" onchange="fillCustomerInfo()">
+                    <option value="">-- Select a customer --</option>
+                </select>
+               </div>
+                <!-- Customer Name Input -->
+                <div class="mb-4">
+                    <label for="customerName" class="block text-sm font-medium text-white">Customer Name</label>
+                    <input type="text" id="customerName" class="mt-1 p-2 w-full text-gray-900 rounded-md" placeholder="Enter customer name"required>
+                </div>
+        
+                <!-- Contact Number Input -->
+                <div class="mb-4">
+                    <label for="contactNumber" class="block text-sm font-medium text-white">Contact Number</label>
+                    <input type="tel" id="contactNumber" class="mt-1 p-2 w-full text-gray-900 rounded-md" placeholder="Enter contact number" required>
+                </div>
+        
+              
+                <!-- Buttons -->
+                
+                
+                <div class="flex space-x-2">
+                    <!-- Calculate Price Button -->
+                    <button id="calculateTotal" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md focus:outline-none" >
+                        Calculate Price
+                    </button>
+        
+                    <!-- Complete Order Button -->
+                    <button id="completeOrderButton" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md focus:outline-none" >
+
+                        Complete Order
+                    </button>
+                </div>
+
+                <!-- Discount Input -->
+                <div class="mb-4">
+                    <label for="discount" class="block text-sm font-medium text-white">Discount</label>
+                    <input type="number" id="discount" class="mt-1 p-2 w-full text-gray-900 rounded-md" placeholder="Enter discount">
+                </div>
+
+                  <!-- Calculated Count Label -->
+                  <div class="mb-4">
+                    <label for="calculatedCount" class="block text-sm font-medium text-white">Calculated Total Price</label>
+                    <input type="number" id="calculatedCount" class="mt-1 p-2 w-full text-gray-900 rounded-md" placeholder="Total Price" readonly >
+                </div>
+        
+                
+        
+                <div id="cart-items"></div>
+                
+                
+
+            </div>
+        </aside>
+        
+        
+
+  
+  <section class="item-section">
+        
+  
+
+<!-- drawer component -->
+<div id="drawer-top-example" class="fixed top-0 left-0 right-0 z-50 w-full p-4 transition-transform -translate-y-full bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-top-label">
+ <h5 id="drawer-top-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
+    "Savor the Juiciest Bites! 🔥 Freshly grilled, perfectly stacked, and bursting with flavor your ultimate burger experience starts here!"    </p>
+
+</h5>
+ <button type="button" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
+   <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+   </svg>
+   <span class="sr-only">Close menu</span>
+</button>
+<div class="flex flex-wrap gap-4 p-4 justify-center items-center">
+    
+     
+        <button type="button" class="food-button text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl" onclick="All()" id="All" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example">
+            All
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 10h16M4 14h16"/>
+                <path d="M4 4h16l-2 6H6z"/>
+                <path d="M6 18h12l-1 4H7z"/>
+            </svg>
+        </button>
+    <button type="button" class="food-button text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl" onclick="Burger()" id="Burger" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example">
+        Burgers
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 9h20M4 13h16M3 17h18M5 6h14l-2-2H7z"/>
+        </svg>
+    </button>
+
+    <button type="button" class="food-button text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl" onclick="Submarine()" id="Submarine" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example">
+        Submarines
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="10" width="20" height="8" rx="4"/>
+            <path d="M2 14h20M4 18h16"/>
+            <path d="M6 8l1-2h10l1 2"/>
+        </svg>
+        
+    </button>
+
+    <button type="button" class="food-button text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl" onclick="Pasta()" id="Pasta" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example">
+        Pasta
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12h20M6 15l4-8m4 8l4-8M10 15l4-8"/>
+            <path d="M4 19h16l-2-4H6z"/>
+        </svg>
+    </button>
+    
+    
+
+    <button type="button" class="food-button text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl" onclick="Fries()" id="Fries" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example">
+        Fries
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 21h16l-2-12H6z"/>
+            <path d="M7 9V2m4 7V3m4 7V4m4 7V6"/>
+        </svg>
+    </button>
+
+    <button type="button" class="food-button text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl" onclick="Beverage()" id="Beverage" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example">
+        Beverages
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3h18l-2 6H5z"/>
+            <path d="M12 9v10m-4 0h8"/>
+            <path d="M8 5l8-3"/>
+        </svg>
+    </button>
+
+    <button type="button" class="food-button text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl" onclick="Chicken()" id="Chicken" data-drawer-hide="drawer-top-example" aria-controls="drawer-top-example">
+        Chicken
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6c1.5-1.5 4 0 4 2s-2.5 3.5-4 2"/>
+            <path d="M9 15c-3-3-6-5-6-9s3-6 6-6 6 3 6 6-3 6-6 9z"/>
+            <circle cx="9" cy="21" r="2"/>
+            <circle cx="15" cy="21" r="2"/>
+        </svg>
+    </button>
+</div>
+
+</div>
+<div class=" px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6 fixed-top">
+    <div class="mx-auto mb-4 max-w-screen-sm lg:mb-15">
+        <h1 class="text-5xl font-bold text-white" id="catogaries">Burger 🍔 Hub</h1>
+       
+    </div> 
+    
+    
+<div class="grid gap-8 lg:gap-14 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 " id="items">
+    <!-- Content -->
+</div>
+</div>
+
+<div>
+   
+</div>
+
+
+</section>       
+     
+    
+      
+
+      <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+      
+      <script src="app.js"></script>
+      
+</body>
+</html>
