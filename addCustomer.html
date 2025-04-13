@@ -20,7 +20,46 @@
             background: rgba(0, 0, 0, 0.7);
             padding: 10px;
             border-radius: 10px;
+            animation: zoom-in-bounce 0.6s ease-out;
         }
+        @keyframes zoom-in-bounce {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+    }
+    80% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+
+#customerForm{
+
+    animation: slide-in-top 0.8s ease-out;
+
+}
+    @keyframes slide-in-top {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+
     </style>
 </head>
 <body>

@@ -20,7 +20,26 @@
     background: rgba(0, 0, 0, 0.7);
     padding: 10px;
     border-radius: 10px;
+    animation: zoom-in-bounce 0.6s ease-out;
+
 }
+@keyframes zoom-in-bounce {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+    }
+    80% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 
 /* Make the table header stick while scrolling */
 .table-container table thead {
@@ -123,6 +142,19 @@
             background-color: #c9302c;
         }
 
+         #itemForm{
+            animation: slide-in-top 0.8s ease-out;
+          }
+          @keyframes slide-in-top {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
     </style>
 </head>
 <body>
@@ -193,7 +225,7 @@
             </ol>
         </div>
     </nav>
-    <div class="flex items-center min-h-screen pt-20">
+    <div class="flex items-center min-h-screen pt-20" id="itemForm">
         <form class="bg-dark p-1 rounded-lg shadow-lg w-full max-w-lg text-white mb-4">
             <h2 class="text-2xl font-semibold text-center mb-6">Item Management</h2>
             <div class="mb-4">

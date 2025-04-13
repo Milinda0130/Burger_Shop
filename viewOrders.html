@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,63 +11,108 @@
             background: linear-gradient(135deg, #17202c, #c3cfe2);
             font-family: 'Arial', sans-serif;
         }
+
         .container {
             max-width: 900px;
             margin: 100px auto;
-            background: white;
+
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+
+            transition: all 0.3s ease;
+            background: rgba(0, 255, 213, 0.79);
+            border: 1px solid rgba(42, 38, 38, 0.2);
+            animation: flip-left 0.8s ease-out;
         }
+
+        @keyframes flip-left {
+            0% {
+                transform: perspective(400px) rotateY(-90deg);
+                opacity: 0;
+            }
+
+            40% {
+                transform: perspective(400px) rotateY(-20deg);
+            }
+
+            70% {
+                transform: perspective(400px) rotateY(20deg);
+            }
+
+            100% {
+                transform: perspective(400px) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
         .table-container {
             overflow-x: auto;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
         }
-        th, td {
+
+        th,
+        td {
             padding: 12px;
             text-align: left;
         }
+
         thead {
             background: #4A90E2;
             color: white;
         }
+
         tbody tr:nth-child(even) {
             background: #f2f2f2;
         }
+
         tbody tr:hover {
             background: #ddd;
             transition: 0.3s;
         }
+
         .action-link {
             color: #4A90E2;
             font-weight: bold;
             text-decoration: none;
         }
+
         .action-link:hover {
             text-decoration: underline;
+
         }
+
+        #items>div {}
     </style>
 </head>
+
 <body>
-    <nav id="sticky-banner" tabindex="-1" class="fixed top-0 start-0 z-40 flex justify-center w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+    <nav id="sticky-banner" tabindex="-1"
+        class="fixed top-0 start-0 z-40 flex justify-center w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
         <div class="flex justify-between w-full items-center">
             <!-- Logo on the left -->
             <div class="text-lg font-bold text-gray-700 dark:text-white flex items-center">
                 <img src="./logo.jpeg" alt="Burger Hub Logo" class="w-6 h-6 mr-2">
                 BURGER HUB
             </div>
-            
-    
+
+
             <!-- Navigation Items -->
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                 <li class="inline-flex items-center">
-                    <a href="./index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                    <a href="./index.html"
+                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                         </svg>
                         Home
                     </a>
@@ -77,9 +123,13 @@
                     </div>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="./viewOrders.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
+                    <a href="./viewOrders.html"
+                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z"
+                                clip-rule="evenodd" />
                         </svg>
                         View Orders
                     </a>
@@ -90,9 +140,12 @@
                     </div>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="./addCustomer.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+                    <a href="./addCustomer.html"
+                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="currentColor" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
                         </svg>
                         Add Customer
                     </a>
@@ -103,16 +156,20 @@
                     </div>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="./addItem.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9.99999h.01m-5.01 0h.01m-5.01 0h.01m6.99-2h.01m-4.01 0h.01M6.5 13C5.11929 13 4 11.5609 4 9.78571c0-1.51294.45014-3.74021 2.96705-3.45229 0-2.59313 4.39355-3.02689 5.16885-1.10126.5-.64286 1.5465-1.20611 2.5405-1.09637 1.2588.13899 2.0504 1.03413 2.2104 2.19763 1.7674 0 3.3338 1.31661 3.1132 3.45229C20 11.5609 18.8807 13 17.5 13m-8.52339 5.6162V20h6.04679v-1.3838C17.68 17.6825 19.633 15.5551 20 13H4c.36697 2.5551 2.31996 4.6825 4.97661 5.6162Z"/>
+                    <a href="./addItem.html"
+                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-5 h-5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 9.99999h.01m-5.01 0h.01m-5.01 0h.01m6.99-2h.01m-4.01 0h.01M6.5 13C5.11929 13 4 11.5609 4 9.78571c0-1.51294.45014-3.74021 2.96705-3.45229 0-2.59313 4.39355-3.02689 5.16885-1.10126.5-.64286 1.5465-1.20611 2.5405-1.09637 1.2588.13899 2.0504 1.03413 2.2104 2.19763 1.7674 0 3.3338 1.31661 3.1132 3.45229C20 11.5609 18.8807 13 17.5 13m-8.52339 5.6162V20h6.04679v-1.3838C17.68 17.6825 19.633 15.5551 20 13H4c.36697 2.5551 2.31996 4.6825 4.97661 5.6162Z" />
                         </svg>
                         Add Items
                     </a>
                 </li>
                 <li>
                     <div class="flex items-center">
-                        <svg class="rtl:rotate-180 block w-5 h-5 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <svg class="rtl:rotate-180 block w-5 h-5 mx-1 text-gray-400 " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         </svg>
                     </div>
                 </li>
@@ -120,10 +177,10 @@
         </div>
     </nav>
     <div class="container">
-        <h2 class="text-center text-2xl font-bold mb-6" >Orders List</h2>
+        <h2 class="text-center text-2xl font-bold mb-6">Orders List</h2>
         <div class="table-container">
             <table id="orderTable">
-                 <thead>
+                <thead>
                     <tr>
                         <th>#</th>
                         <th>Customer Name</th>
@@ -131,25 +188,17 @@
                         <th>Items</th>
                         <th>Discount</th>
                         <th>Total Price</th>
-                       
+
                     </tr>
                 </thead>
                 <tbody id="orderTableBody">
-                   
-            </table> 
+
+            </table>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="./viewOrders.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-    

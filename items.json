@@ -142,7 +142,7 @@
     {
         "itemno": "B1022", 
         "itemtype": "Submarine", 
-        "name": "Cheese Chicken Submarine", 
+        "name": "Cheese  Submarine", 
         "price": "1900.00", 
         "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0iKW2-Iq-oHJv1Z_Ewvl2o_ZcOnNaCLWjOQ&s"
     },
@@ -282,7 +282,7 @@
     {
         "itemno": "B1042",
         "itemtype": "Chicken",
-        "name": "Devilled Chicken (Large)",
+        "name": "Devilled Chicken",
         "price": "900.00",
         "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTMUv0hM5SX5FCSFDZd0CcKjRn-dBM_1EaXQ&s"
     },
