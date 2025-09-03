@@ -3,26 +3,42 @@ let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 let customers = JSON.parse(localStorage.getItem("customers")) || [];
 let orders = JSON.parse(sessionStorage.getItem("orders")) || [];
 
-// Load items from JSON or localStorage
-function loadItemsFromJSON() {
-    return new Promise((resolve, reject) => {
-        if (localStorage.getItem("items")) {
-            itemlist = JSON.parse(localStorage.getItem("items"));
-            resolve(itemlist);
+// Load items from API or localStorage
+async function loadItemsFromJSON() {
+    try {
+        // First try to load from API
+        const response = await fetch('http://localhost:8080/items');
+        if (response.ok) {
+            itemlist = await response.json();
+            localStorage.setItem("items", JSON.stringify(itemlist));
+            return itemlist;
         } else {
-            fetch("/items.json")
-                .then((response) => response.json())
-                .then((data) => {
+            // Fallback to localStorage if API fails
+            if (localStorage.getItem("items")) {
+                itemlist = JSON.parse(localStorage.getItem("items"));
+                return itemlist;
+            } else {
+                // Final fallback to JSON file
+                const jsonResponse = await fetch("/items.json");
+                if (jsonResponse.ok) {
+                    const data = await jsonResponse.json();
                     itemlist = data;
                     localStorage.setItem("items", JSON.stringify(itemlist));
-                    resolve(itemlist);
-                })
-                .catch((error) => {
-                    console.error("Error loading items:", error);
-                    reject(error);
-                });
+                    return itemlist;
+                } else {
+                    throw new Error("Failed to load items from all sources");
+                }
+            }
         }
-    });
+    } catch (error) {
+        console.error("Error loading items:", error);
+        // Fallback to localStorage if available
+        if (localStorage.getItem("items")) {
+            itemlist = JSON.parse(localStorage.getItem("items"));
+            return itemlist;
+        }
+        throw error;
+    }
 }
 
 // Render Menu Items
@@ -172,15 +188,23 @@ function showTotal() {
 }
 
 // Populate Customer Dropdown
-function populateCustomerDropdown() {
-    const customerSelect = document.getElementById("existingCustomer");
-    customerSelect.innerHTML = '<option value="">-- Select a customer --</option>';
-    customers.forEach((customer, index) => {
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = `${customer.name} (${customer.contactNumber})`;
-        customerSelect.appendChild(option);
-    });
+async function populateCustomerDropdown() {
+    try {
+        const response = await fetch('http://localhost:8080/customer');
+        if (response.ok) {
+            customers = await response.json();
+            const customerSelect = document.getElementById("existingCustomer");
+            customerSelect.innerHTML = '<option value="">-- Select a customer --</option>';
+            customers.forEach((customer, index) => {
+                const option = document.createElement("option");
+                option.value = index;
+                option.textContent = `${customer.name} (${customer.contact})`;
+                customerSelect.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading customers:', error);
+    }
 }
 
 // Fill Customer Info
@@ -197,7 +221,7 @@ function fillCustomerInfo() {
 }
 
 // Place Order
-function placeOrder() {
+async function placeOrder() {
     const customerName = document.getElementById("customerName").value.trim();
     const contactNumber = document.getElementById("contactNumber").value.trim();
     const discount = parseFloat(document.getElementById("discount").value) || 0;
@@ -205,45 +229,88 @@ function placeOrder() {
 
     if (!customerName || !contactNumber) {
         showCustomerInfoAlert();
-
         return;
     }
 
-    let existingCustomer = customers.find(customer => customer.name === customerName && customer.contactNumber === contactNumber);
+    let existingCustomer = customers.find(customer => customer.name === customerName && customer.contact === contactNumber);
 
     if (!existingCustomer) {
-        const newCustomer = { name: customerName, contactNumber: contactNumber };
-        customers.push(newCustomer);
-        localStorage.setItem("customers", JSON.stringify(customers));
-        populateCustomerDropdown();
-        showNewCustomerAlert();
+        // Create new customer in backend
+        try {
+            const newCustomer = { 
+                name: customerName, 
+                email: `${customerName.toLowerCase().replace(/\s+/g, '')}@example.com`, // Generate email
+                address: 'Not specified',
+                contact: contactNumber 
+            };
+            
+            const response = await fetch('http://localhost:8080/customer/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newCustomer)
+            });
+
+            if (response.ok) {
+                const savedCustomer = await response.json();
+                customers.push(savedCustomer);
+                populateCustomerDropdown();
+                showNewCustomerAlert();
+            } else {
+                showCustomAlert('Failed to create customer', 'info');
+                return;
+            }
+        } catch (error) {
+            console.error('Error creating customer:', error);
+            showCustomAlert('Error creating customer', 'info');
+            return;
+        }
     }
 
-    const order = {
-        customerName,
-        contactNumber,
-        items: cart.map(cartItem => ({
-            name: cartItem.name,
-            price: cartItem.price,
-            quantity: cartItem.quantity
-        })),
-        discount,
-        totalPrice
-    };
+    // Create order in backend
+    try {
+        const orderData = {
+            customerName,
+            contactNumber,
+            items: cart.map(cartItem => ({
+                name: cartItem.name,
+                price: cartItem.price,
+                quantity: cartItem.quantity
+            })),
+            discount,
+            totalPrice
+        };
 
-    orders.push(order);
-    sessionStorage.setItem("orders", JSON.stringify(orders));
+        const response = await fetch('http://localhost:8080/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+        });
 
-    showOrderSuccessAlert();
-
-     cart = [];
-    sessionStorage.setItem("cart", JSON.stringify(cart));
-    document.getElementById("customerName").value = "";
-    document.getElementById("contactNumber").value = "";
-    document.getElementById("discount").value = "";
-    renderCart();
-      document.getElementById("calculatedCount").value = "";
-    clear();
+        if (response.ok) {
+            const savedOrder = await response.json();
+            orders.push(savedOrder);
+            showOrderSuccessAlert();
+            
+            // Clear cart and form
+            cart = [];
+            sessionStorage.setItem("cart", JSON.stringify(cart));
+            document.getElementById("customerName").value = "";
+            document.getElementById("contactNumber").value = "";
+            document.getElementById("discount").value = "";
+            renderCart();
+            document.getElementById("calculatedCount").value = "";
+            clear();
+        } else {
+            showCustomAlert('Failed to create order', 'error');
+        }
+    } catch (error) {
+        console.error('Error creating order:', error);
+        showCustomAlert('Error creating order', 'error');
+    }
 }
 
 // Initialize

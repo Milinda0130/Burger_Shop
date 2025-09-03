@@ -2,14 +2,12 @@
 let items = [];
 let editingIndex = -1;
 
+// API Base URL
+const API_BASE_URL = 'http://localhost:8080/items';
+
 // Load items when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    loadItemsFromLocalStorage();
-    
-    // If no items found in localStorage, try loading from JSON
-    if (!items.length) {
-        loadItemsFromJSON();
-    }
+    loadItemsFromAPI();
     
     // Set up form submission listener
     document.querySelector('form').addEventListener('submit', handleFormSubmit);
@@ -21,46 +19,55 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Load items from JSON file
-function loadItemsFromJSON() {
-    fetch('items.json')
-        .then(response => response.json())
-        .then(data => {
-            if (!localStorage.getItem('items')) {
-                items = data;
-                refreshTable();
-                saveItemsToLocalStorage();
-            }
-        })
-        .catch(error => console.error('Error loading items:', error));
+// Load items from API
+async function loadItemsFromAPI() {
+    try {
+        const response = await fetch(API_BASE_URL);
+        if (response.ok) {
+            items = await response.json();
+            refreshTable();
+        } else {
+            showAlert('Failed to load items', 'error');
+        }
+    } catch (error) {
+        console.error('Error loading items:', error);
+        showAlert('Error loading items', 'error');
+    }
 }
 
 // Handle form submission
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
 
     const itemno = document.getElementById('itemno').value.trim();
     const itemtype = document.getElementById('itemtype').value.trim();
     const name = document.getElementById('name').value.trim();
-    // Fix: Use id 'price' to get the price input
     const price = document.getElementById('price').value.trim();
-        const image = document.getElementById('image').files[0];
+    const image = document.getElementById('image').files[0];
 
     if (itemno === '' || itemtype === '' || name === '' || price === '' || !image) {
-        alert('Please fill in all fields and select an image');
+        showAlert('Please fill in all fields and select an image', 'error');
         return;
     }
 
     const reader = new FileReader();
     reader.readAsDataURL(image);
-    reader.onload = function() {
+    reader.onload = async function() {
         const imageUrl = reader.result;
         
+        const itemData = {
+            itemno: parseInt(itemno),
+            itemtype: itemtype,
+            name: name,
+            price: parseFloat(price),
+            imageUrl: imageUrl
+        };
+        
         if (editingIndex === -1) {
-            addItem({ itemno, itemtype, name, price, imageUrl });
+            await addItem(itemData);
         } else {
-            updateItem(editingIndex, { itemno, itemtype, name, price, imageUrl });
-            document.querySelector('form button').innerText = 'Register';
+            await updateItem(editingIndex, itemData);
+            document.querySelector('form button').innerText = 'Add Item';
             editingIndex = -1;
         }
 
@@ -69,19 +76,56 @@ function handleFormSubmit(e) {
 }
 
 // Add a new item
-function addItem(item) {
-    items.push(item);
-    addItemToTable(item, items.length - 1);
-    saveItemsToLocalStorage();
-    updateMenuPage();
+async function addItem(item) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(item)
+        });
+
+        if (response.ok) {
+            const savedItem = await response.json();
+            items.push(savedItem);
+            addItemToTable(savedItem, items.length - 1);
+            showAlert('Item added successfully!', 'success');
+            updateMenuPage();
+        } else {
+            showAlert('Failed to add item', 'error');
+        }
+    } catch (error) {
+        console.error('Error adding item:', error);
+        showAlert('Error adding item', 'error');
+    }
 }
 
 // Update an existing item
-function updateItem(index, updatedItem) {
-    items[index] = updatedItem;
-    refreshTable(); // Refresh the entire table to ensure correct display
-    saveItemsToLocalStorage();
-    updateMenuPage();
+async function updateItem(index, updatedItem) {
+    try {
+        const item = items[index];
+        const response = await fetch(`${API_BASE_URL}/${item.itemno}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedItem)
+        });
+
+        if (response.ok) {
+            const savedItem = await response.json();
+            items[index] = savedItem;
+            refreshTable();
+            showAlert('Item updated successfully!', 'success');
+            updateMenuPage();
+        } else {
+            showAlert('Failed to update item', 'error');
+        }
+    } catch (error) {
+        console.error('Error updating item:', error);
+        showAlert('Error updating item', 'error');
+    }
 }
 
 // Add item to the table
@@ -100,7 +144,7 @@ function addItemToTable(item, index) {
             <button onclick="editItem(${index})"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 me-2 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-white-800">
                 Edit
             </button>
-            <button onclick="deleteItem(${index})"data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-white-800">
+            <button onclick="deleteItem(${index})" class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-white-800">
                 Delete
             </button>
         </td>
@@ -115,7 +159,7 @@ function editItem(index) {
     document.getElementById('itemno').value = item.itemno;
     document.getElementById('itemtype').value = item.itemtype;
     document.getElementById('name').value = item.name;
-const price = document.getElementById('price').value.trim();
+    document.getElementById('price').value = item.price;
     document.querySelector('form button').innerText = 'Update Item';
     editingIndex = index;
     
@@ -123,8 +167,7 @@ const price = document.getElementById('price').value.trim();
     document.querySelector('form').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Delete an item
-
+// Custom confirm dialog
 function customConfirm(message) {
     return new Promise((resolve) => {
         // Get elements
@@ -152,14 +195,28 @@ function customConfirm(message) {
     });
 }
 
-// Modified deleteItem function to use the custom confirm
+// Delete an item
 async function deleteItem(index) {
     const confirmed = await customConfirm('Are you sure you want to delete this item?');
     if (confirmed) {
-        items.splice(index, 1);
-        refreshTable();
-        saveItemsToLocalStorage();
-        updateMenuPage();
+        try {
+            const item = items[index];
+            const response = await fetch(`${API_BASE_URL}/${item.itemno}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                items.splice(index, 1);
+                refreshTable();
+                showAlert('Item deleted successfully!', 'success');
+                updateMenuPage();
+            } else {
+                showAlert('Failed to delete item', 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting item:', error);
+            showAlert('Error deleting item', 'error');
+        }
     }
 }
 
@@ -168,20 +225,6 @@ function refreshTable() {
     const tableBody = document.querySelector('table tbody');
     tableBody.innerHTML = '';
     items.forEach((item, index) => addItemToTable(item, index));
-}
-
-// Save items to localStorage
-function saveItemsToLocalStorage() {
-    localStorage.setItem('items', JSON.stringify(items));
-}
-
-// Load items from localStorage
-function loadItemsFromLocalStorage() {
-    const storedItems = localStorage.getItem('items');
-    if (storedItems) {
-        items = JSON.parse(storedItems);
-        refreshTable();
-    }
 }
 
 // Search functionality
@@ -208,19 +251,56 @@ function updateMenuPage() {
     // This function would typically update the menu page if needed
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, setting up event listeners');
-    loadItemsFromLocalStorage();
+// Show alert function
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.textContent = message;
     
-    // If no items found in localStorage, try loading from JSON
-    if (!items.length) {
-        loadItemsFromJSON();
+    // Add styles
+    alertDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    if (type === 'success') {
+        alertDiv.style.backgroundColor = '#10b981';
+    } else if (type === 'error') {
+        alertDiv.style.backgroundColor = '#ef4444';
     }
     
-    // Set up form submission listener
-    const form = document.querySelector('form');
-    form.addEventListener('submit', handleFormSubmit);
-    console.log('Form submission listener added', form);
+    document.body.appendChild(alertDiv);
     
-    // Rest of your code...
-});
+    // Remove alert after 3 seconds
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+        }
+    }, 3000);
+}
+
+// Add CSS animation
+if (!document.getElementById('alert-styles')) {
+    const style = document.createElement('style');
+    style.id = 'alert-styles';
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
